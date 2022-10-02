@@ -261,13 +261,13 @@ export default {
       };
       this.loading = true;
       this.disabled = true;
+      this.errorMessage = "";
 
       try {
         const response = await sendCalcData(data);
 
         if (response.status === 200) {
           this.successMessage = "Ваши данные успешно отправлены  ";
-          this.errorMessage = "";
         } else {
           this.disabled = false;
           this.errorMessage = "Что-то пошло не так, попробуйте позже";
