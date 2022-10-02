@@ -1,20 +1,20 @@
 <template>
   <div id="app">
-    <CarLisingCalc/>
+    <CarLisingCalc />
   </div>
 </template>
 
 <script>
-
-import CarLisingCalc from './components/CarLisingCalc.vue';
+import CarLisingCalc from "./components/CarLisingCalc.vue";
 export default {
-  name: 'App',
+  name: "App",
+
   components: {
-    CarLisingCalc
-  }
-}
+    CarLisingCalc,
+  },
+};
 </script>
 
 <style lang="scss">
-  @import "./assets/scss/app.scss";
+@import "./assets/scss/app.scss";
 </style>
