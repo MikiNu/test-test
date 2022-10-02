@@ -1,0 +1,299 @@
+* { 
+    margin: 0;
+}
+
+.calculator{
+    box-sizing: border-box;
+    padding: 213px 48px; 
+    max-width: 1440px;
+    min-width: $minWidth;
+    font-size: 30px;
+    line-height: 36px;
+    @include textStileNekstBlack;
+
+    &__title{
+        font-size: 54px;
+        line-height: 90%;
+        margin-bottom: 32px;
+        max-width: 753px;
+        color:$mainColorTitle;
+    }
+
+    &__fields-elements{
+        display: flex;
+        justify-content: space-between;
+        color: $colorText;
+        flex-wrap: wrap;
+
+    }
+
+    &__element{
+        max-width: 427px;
+        width: 100%;
+        transition: 0.5 linear;
+        &_type{
+            &_field{
+                &.disabled{
+                    opacity: 0.4;
+                }
+            }
+        }
+    }
+
+    &__input-block{
+        background-color: $mainBackground;
+        border: 2px solid $mainBackground;
+        border-radius: 16px;
+        margin-top: 24px;
+        padding: 14px 22px;
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        margin-bottom: 44px;
+        transition: .3s linear;
+        &.active{
+            background-color: #FFFFFF;
+            border: 2px solid $mainBackground;
+        }
+
+        &_type{
+            &_payment{
+                padding: 5px 5px 5px 22px;  
+            }
+        }
+    }
+    &__init-block{
+        background: #E0E0E0;
+        border-radius: $borderRadius;
+        padding: 15px 17px;
+        font-size: 20px;
+        line-height: 120%;
+    }
+
+    &__label{
+        @include textStileGilroy;
+        font-size: 16px;
+        line-height: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+    &__input{
+        @include textStileNekstBlack;
+        font-size: inherit;
+        line-height: inherit;
+        max-width: fit-content;
+        padding: 0;
+        border: none;
+        color: inherit;
+        background-color: inherit;
+        max-width: 250px;
+        &::placeholder {
+            @include textStileGilroy;
+            font-size: 14px;
+            opacity: .8;
+          }
+    }
+    &__input:active, :hover, :focus {
+        outline: 0;
+        outline-offset: 0;
+    }
+    &__input:disabled {
+        cursor: default;
+    }
+
+
+    &__input::-webkit-outer-spin-button,
+    &__input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0; 
+    }
+
+    &__values{
+        font-size: 54px;
+        line-height: 90%;
+        margin-top: 8px
+
+    }
+
+    &__button{
+        font-family: inherit;
+        padding: 14px 0px 18px;
+        width: 100%;
+        color: #FFFFFF;
+        background: $bottomBackgroundPassive;
+        border-radius: 40px;
+        border: none;
+        font-size: inherit;
+        line-height: inherit;
+        cursor: pointer;
+        transition: .5s linear;
+
+        &.disabled{
+            background-color: $bottomBackgroundDisabled;
+        }
+
+    }
+
+
+    &__button:hover{
+        background-color: $bottomBackgroundHover;
+        &.disabled{
+            background-color: $bottomBackgroundDisabled;
+            cursor: default;
+        }
+    }
+    &__button:active{
+        background-color: $bottomBackgroundPressed;
+    }
+
+    &__success{
+        margin-top: 70px;
+        padding: 10px;
+        background-color: $mainBackground;
+        border-radius: $borderRadius;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    &__success-message{
+        margin-right: 40px;
+        margin-bottom: 15px;
+    }
+
+    &__link{
+        font-size: 20px;
+        color: #FF9514;
+    }
+}
+
+@media (max-width: 1400px) {
+    .calculator{
+        padding: 100px 48px 120px; 
+
+        &__fields-elements{
+            justify-content: start;
+        }
+
+        &__element{
+            max-width: 450px;
+            &_type{
+                &_field{
+                    max-width: 928px;
+                   
+                }
+            }
+        }
+
+        &__button{
+          margin-top: 44px;
+          max-width: 345px;
+        }
+    }
+  }
+
+  @media (max-width: 1000px) {
+    .calculator{
+        padding: 64px 36px 156px; 
+
+        &__element{
+            max-width: 348px;
+            &_type{
+                &_field{
+                    max-width: 928px;
+                }
+            }
+        }
+    }
+  }
+
+@media (max-width: 767px) {
+    .calculator{
+        &__title{
+            font-size: 34px;
+            margin-bottom: 32px;
+        }
+        
+        &__values{
+            font-size: 36px;
+        }
+        &__element{
+            max-width: 250px;
+            &_type{
+                &_field{
+                    max-width: inherit;
+                }
+            }
+        }
+        &__button{
+            margin-top: 32px;
+            font-size: 24px;
+            line-height: 90%;
+            padding: 14px;
+        }
+
+        &__input{
+            font-size: 24px;
+            line-height: 90%;
+            
+            &::placeholder {
+            
+                font-size: 12px;
+              
+            }
+        }
+          
+    }
+}
+@media (max-width: 580px) {
+
+    .calculator {
+        &__fields-elements{
+            color: $colorTextMobil
+        }
+        &__input-block{
+            margin-top: 8px;
+            padding: 18px;
+            margin-bottom: 25px;
+            font-size: 22px;
+            line-height: 20px;
+            &_type{
+                &_payment{
+                    padding: 4px 4px 4px 18px;  
+                }
+            }
+        }
+        &__label{
+            font-size: 14px;
+            line-height: 136%;
+        }
+        &__values{
+            font-size: 22px;
+            line-height: 20px;
+            margin-bottom: 29px;
+        }
+
+        &__element{
+            max-width: 100%;
+        }
+        &__input{
+            max-width: 150px;
+            font-size: 22px;
+            line-height: 20px;      
+        }
+        &__button{
+            margin-top: 3px;
+            font-size: 22px;
+            line-height: 20px;
+            max-width: 100%;
+        }
+        &__init-block{
+            padding: 14px;
+        }
+        &__success{
+            margin-top: 50px;
+            font-size: 22px;
+            line-height: 20px;
+        }
+    }
+}

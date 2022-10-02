@@ -1,0 +1,17 @@
+@keyframes spinner-border {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    vertical-align: -0.125em;
+    border: 2px solid white;
+    border-right-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: .75s linear infinite spinner-border;
+    animation: .75s linear infinite spinner-border;
+  }

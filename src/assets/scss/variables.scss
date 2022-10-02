@@ -1,0 +1,38 @@
+$minWidth: 320px;
+$mainColorTitle: #111111;
+$colorText: #575757;
+$colorTextMobil: #333E48;;
+$mainBackground:#F3F3F4;
+$borderRadius: 16px;
+
+
+$bottomBackgroundPassive: #FF9514;
+$bottomBackgroundHover: #111111;
+$bottomBackgroundPressed: #575757;
+$bottomBackgroundDisabled: rgba(255, 149, 20, 0.4);;
+
+
+@mixin textStileNekstBlack {
+    font-family: 'Nekst Black';
+    font-style: normal;
+    font-weight: 900;
+}
+@mixin textStileGilroy {
+    font-family: 'Gilroy';
+    font-style: normal;
+    font-weight: 400;
+}
+
+
+// range
+$height: 20px;
+$thumb-height: 20px;
+$track-height: 2px;
+
+$upper-color: #E1E1E1;;
+$lower-color: #FF9514;
+$thumb-color: #FF9514;
+$thumb-hover-color: #FF9514;
+
+$upper-background: linear-gradient(to bottom, $upper-color, $upper-color) 100% 50% / 100% $track-height no-repeat transparent;
+$lower-background: linear-gradient(to bottom, $lower-color, $lower-color) 100% 50% / 100% $track-height no-repeat transparent;
