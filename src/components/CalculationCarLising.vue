@@ -8,28 +8,30 @@
           'calculator__element calculator__element_type_field',
         ]"
       >
-        <label for="costCar" class="calculator__label">
+        <label for="priceCar" class="calculator__label">
           Стоимость автомобиля
         </label>
-        <div class="calculator__input-block">
+        <div class="calculator__input-block" @click="onFocusInput">
           <input
-            v-model="costCar"
-            autocomplete="off"
-            id="costCar"
-            type="number"
-            placeholder="Введите стоимость машины"
+            v-model="priceCarInput"
             class="calculator__input"
+            id="priceCar"
+            type="text"
+            placeholder="Введите стоимость машины"
+            autocomplete="off"
             :disabled="disabled"
+            @keyup.enter="onBlurInput"
             @focus="setActiveClass"
             @blur="deleteActiveClass"
-            @change="validCostCar"
+            @input="formatPriceCarInput"
+            @change="changePriceCar"
           />
           ₽
           <input
-            v-model="costCar"
+            v-model="priceCar"
             type="range"
-            min="1000000"
-            max="6000000"
+            :min="minPriceCar"
+            :max="maxPriceCar"
             :disabled="disabled"
             class="e-range"
           />
@@ -41,31 +43,32 @@
           'calculator__element calculator__element_type_field',
         ]"
       >
-        <label for="initialPayment" class="calculator__label">
+        <label for="initialPay" class="calculator__label">
           Первоначальный взнос
         </label>
         <div
           class="calculator__input-block calculator__input-block_type_payment"
+          @click="onFocusInput"
         >
           <input
-            v-model="initialPayment"
-            id="initialPayment"
-            type="number"
+            v-model="initialPayInput"
             class="calculator__input"
+            id="initialPay"
+            type="text"
             placeholder="Введите процент взноса"
             autocomplete="off"
             :disabled="disabled"
+            @keyup.enter="onBlurInput"
             @focus="setActiveClass"
             @blur="deleteActiveClass"
-            @input="clearInitialPayment"
-            @change.prevent="changeInitialPayment"
+            @change="changeInitialPayment"
           />
           <input
             v-model="initialPercent"
-            type="range"
-            min="10"
-            max="60"
             class="e-range"
+            type="range"
+            :min="minInitialPercent"
+            :max="maxInitialPercent"
             :disabled="disabled"
             @input="changeInitialPayment"
           />
@@ -79,27 +82,28 @@
         ]"
       >
         <label for="termLease" class="calculator__label"> Срок лизинга </label>
-        <div class="calculator__input-block">
+        <div class="calculator__input-block" @click="onFocusInput">
           <input
             v-model="termLease"
+            class="calculator__input"
             id="termLease"
             type="number"
-            class="calculator__input"
             placeholder="Введите срок лизинга"
             autocomplete="off"
             :disabled="disabled"
+            @keyup.enter="onBlurInput"
             @focus="setActiveClass"
             @blur="deleteActiveClass"
-            @change="validTermLease"
+            @change="changeTermLease"
           />
           мес.
           <input
             v-model="termLease"
-            type="range"
-            min="1"
-            max="60"
-            :disabled="disabled"
             class="e-range"
+            type="range"
+            :min="minTermLease"
+            :max="maxTermLease"
+            :disabled="disabled"
           />
         </div>
       </div>
@@ -123,7 +127,7 @@
           @click.prevent="sendCalcData"
         >
           <span v-if="!loading"> Оставить заявку </span>
-          <div v-else class="spinner"></div>
+          <div v-else class="spinner"/>
         </button>
       </div>
     </div>
@@ -131,131 +135,146 @@
       <p class="calculator__success-message">
         {{ successMessage }}
       </p>
-      <a class="calculator__link" href="#" @click.prevent="updateForm">
+      <a class="calculator__link" href="#" @click.prevent="updateCalc">
         Рассчитать стоимость для другого автомобиля
       </a>
     </div>
-    <div 
-            v-if="errorMessage" >
-                <p class="calculator__success">
-                    {{ errorMessage }}  
-                </p>
-        </div>
+    <div v-if="errorMessage" >
+      <p class="calculator__success">
+        {{ errorMessage }}
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
+
 import { sendCalcData } from "../fetch";
+import { defaultParamsCalculator } from "../mixins/defaultParamsCalculator";
 
 export default {
-  name: "CarLisingCalc",
+  name: "CalculationCarLising",
   data() {
     return {
-      defaultCostCar: 3300000,
-      defaultTermLease: 60,
-      defaultInitialPercent: 13,
-      percentRate: 3.5,
-      costCar: 0,
-      termLease: 0,
+      priceCar: 0,
+      priceCarInput: '',
+      initialPay: 0,
+      initialPayInput: '',
       initialPercent: 0,
-      initialPayment: 0,
-      errorMessage: "",
-      successMessage: "",
+      termLease: 0,
       loading: false,
       disabled: false,
-      focusedInput: false,
+      errorMessage: "",
+      successMessage: ""
     };
   },
+  mixins: [defaultParamsCalculator],
   computed: {
     disabledButton() {
-      return this.sumLeasing == 0 || this.monthPay == 0;
+      return this.sumLeasing === 0 || this.monthPay === 0;
     },
     sumLeasing() {
-      if (this.initialPayment >= 1000) {
-        let sum = this.initialPayment + this.termLease * this.monthPay;
-        let result = this.monthPay === 0 ? 0 : sum;
-        return result;
+      if (this.initialPay >= 1000) {
+        let sum = this.initialPay + this.termLease * this.monthPay;
+        return this.monthPay === 0 ? 0 : sum;
       } else {
         return 0;
       }
     },
     monthPay() {
       let pay =
-        (this.costCar - this.initialPayment) *
+        (this.priceCar - this.initialPay) *
         (((this.percentRate / 100) *
           Math.pow(1 + this.percentRate / 100, this.termLease)) /
           (Math.pow(1 + this.percentRate / 100, this.termLease) - 1));
       let roundPay = Math.round(pay);
-      let result =
-        roundPay === Infinity || this.initialPercent < 1 ? 0 : roundPay;
-      return result;
+      return roundPay === Infinity || this.initialPercent < 1 ? 0 : roundPay;
     },
   },
   watch: {
-    costCar(value) {
+    priceCar(value) {
       if (value) {
-        this.initialPayment = Math.round((value * this.initialPercent) / 100);
+        this.priceCarInput  = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        this.initialPay = Math.round((value * this.initialPercent) / 100);
       }
     },
+    priceCarInput(value) {
+      this.priceCarInput = value.replace(/[^0-9 \s]/g, "");
+    },
+    initialPay (value) {
+      this.initialPayInput = value <= this.maxInitialPercent ? value.toString() : value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' ₽'
+    },
+    initialPayInput (value) {
+      this.initialPayInput = value.replace(/[^0-9,₽ \s]/g, "");
+    }
+
   },
   created() {
     this.setDefaultParams();
   },
   methods: {
-    validCostCar(e) {
-      if (e.target.value < 1000000) {
-        this.costCar = 1000000;
-      } else if (e.target.value > 6000000) {
-        this.costCar = 6000000;
+    onFocusInput (event) {
+      let inputBlock = event.target.closest('.calculator__input-block')
+      if (inputBlock && event.target.className !== 'e-range') {
+        let input = inputBlock.querySelector('.calculator__input')
+        input.focus();
       }
     },
-    validTermLease(e) {
-      if (e.target.value < 1) {
-        this.termLease = 1;
-      } else if (e.target.value > 60) {
-        this.termLease = 60;
-      }
+    changePriceCar(event) {
+      let value = event.target.value
+      let formattedValue = Number(value.replace(/\s/g, ''));
+      this.priceCar = this.checkPriceCarValue(formattedValue)
+    },
+    formatPriceCarInput (e) {
+      let number = e.target.value.replace(/[^0-9]/g, "").replace(/\s/g, '');
+      this.priceCar = Number(number)
+    },
+    changeTermLease(event) {
+      let value = event.target.value
+      this.termLease = this.checkTermLeaseValue(value);
+    },
+    calcInitialPay () {
+      this.initialPay = Math.round(
+        (this.priceCar * this.initialPercent) / 100
+      );
+    },
+    onBlurInput (event) {
+      event.target.blur()
     },
     setDefaultParams() {
-      this.costCar = this.defaultCostCar;
+      this.priceCar = this.defaultPriceCar;
       this.termLease = this.defaultTermLease;
       this.initialPercent = this.defaultInitialPercent;
-      this.initialPayment = Math.round(
-        (this.costCar * this.initialPercent) / 100
-      );
+      this.calcInitialPay()
     },
 
     changeInitialPayment(event) {
-      if (10 > event.target.value) {
-        this.initialPercent = 10;
-      } else if (event.target.value > 60) {
-        this.initialPercent = 60;
-      } else {
-        this.initialPercent = event.target.value;
-      }
-      this.initialPayment = Math.round(
-        (this.costCar * this.initialPercent) / 100
-      );
+      let value = event.target.value
+      console.log(this.checkInitialPaymentValue(value))
+      this.initialPercent = this.checkInitialPaymentValue(value)
+      this.calcInitialPay()
     },
-    clearInitialPayment(event) {
-      if (event.target.value > 60) {
-        this.initialPayment = "";
-      }
-    },
+ 
 
     setActiveClass(e) {
+      if (e.target.id === 'initialPay') {
+        this.initialPay = this.initialPercent;
+      }
       e.target.closest(".calculator__input-block").classList.add("active");
     },
 
     deleteActiveClass(e) {
+      if (e.target.id === 'initialPay' &&  this.initialPay == this.initialPercent) {
+        this.calcInitialPay()
+      }
       e.target.closest(".calculator__input-block").classList.remove("active");
     },
 
     async sendCalcData() {
       let data = {
-        costCar: this.costCar,
+        priceCar: this.priceCar,
         termLease: this.termLease,
-        initialPayment: this.initialPayment,
+        initialPay: this.initialPay,
         sumLeasing: this.sumLeasing,
         monthPay: this.monthPay,
       };
@@ -279,7 +298,7 @@ export default {
         this.loading = false;
       }
     },
-    updateForm() {
+    updateCalc() {
       this.disabled = false;
       this.setDefaultParams();
       this.successMessage = "";

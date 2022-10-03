@@ -1,10 +1,10 @@
-* { 
+* {
     margin: 0;
 }
 
 .calculator{
     box-sizing: border-box;
-    padding: 213px 48px; 
+    padding: 213px 48px;
     max-width: 1440px;
     min-width: $minWidth;
     font-size: 30px;
@@ -58,7 +58,7 @@
 
         &_type{
             &_payment{
-                padding: 5px 5px 5px 22px;  
+                padding: 5px 5px 5px 22px;
             }
         }
     }
@@ -97,6 +97,9 @@
         outline: 0;
         outline-offset: 0;
     }
+    &__input:hover{
+      cursor: pointer;
+  }
     &__input:disabled {
         cursor: default;
     }
@@ -105,7 +108,7 @@
     &__input::-webkit-outer-spin-button,
     &__input::-webkit-inner-spin-button {
         -webkit-appearance: none;
-        margin: 0; 
+        margin: 0;
     }
 
     &__values{
@@ -169,7 +172,7 @@
 
 @media (max-width: 1400px) {
     .calculator{
-        padding: 100px 48px 120px; 
+        padding: 100px 48px 120px;
 
         &__fields-elements{
             justify-content: start;
@@ -180,7 +183,7 @@
             &_type{
                 &_field{
                     max-width: 928px;
-                   
+
                 }
             }
         }
@@ -194,7 +197,7 @@
 
   @media (max-width: 1000px) {
     .calculator{
-        padding: 64px 36px 156px; 
+        padding: 64px 36px 156px;
 
         &__element{
             max-width: 348px;
@@ -213,7 +216,7 @@
             font-size: 34px;
             margin-bottom: 32px;
         }
-        
+
         &__values{
             font-size: 36px;
         }
@@ -235,14 +238,14 @@
         &__input{
             font-size: 24px;
             line-height: 90%;
-            
+
             &::placeholder {
-            
+
                 font-size: 12px;
-              
+
             }
         }
-          
+
     }
 }
 @media (max-width: 580px) {
@@ -259,7 +262,7 @@
             line-height: 20px;
             &_type{
                 &_payment{
-                    padding: 4px 4px 4px 18px;  
+                    padding: 4px 4px 4px 18px;
                 }
             }
         }
@@ -279,7 +282,7 @@
         &__input{
             max-width: 150px;
             font-size: 22px;
-            line-height: 20px;      
+            line-height: 20px;
         }
         &__button{
             margin-top: 3px;

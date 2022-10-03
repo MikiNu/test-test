@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <CarLisingCalc />
+    <CalculationCarLising />
   </div>
 </template>
 
 <script>
-import CarLisingCalc from "./components/CarLisingCalc.vue";
+import CalculationCarLising from "./components/CalculationCarLising";
 export default {
   name: "App",
 
   components: {
-    CarLisingCalc,
+    CalculationCarLising,
   },
 };
 </script>
